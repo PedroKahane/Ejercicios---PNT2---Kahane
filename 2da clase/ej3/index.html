@@ -6,7 +6,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ej3</title>
 </head>
-<body>
-    
+<body style="display: flex; align-items: center;flex-direction: column;">
+    <h1 style="font-family: Arial, Helvetica, sans-serif; font-weight: bold;" >Peliculas</h1>
+    <button onclick="ordenarAscendente()" style="background-color:darkgoldenrod; border-radius: 15px; border: 0px; color: aliceblue; cursor: pointer; padding: 7px 20px;margin:5px">Ordenar ascendente y mostrar</button>
+    <button onclick="ordenarDescendente()" style="background-color:darkgoldenrod; border-radius: 15px; border: 0px; color: aliceblue; cursor: pointer; padding: 7px 20px;margin:5px" >Ordenar descendente y mostrar</button>
+    <div>
+        <input type="number" name="number" id="numero">
+        <button onclick="eliminarPorId()" style="background-color:darkgoldenrod; border-radius: 15px; border: 0px; color: aliceblue; cursor: pointer; padding: 7px 15px;margin:5px">Eliminar pelicula por id</button>
+    </div>
+
+    <div id="peliculas">
+        <h3 style="font-family: Arial, Helvetica, sans-serif; font-weight: bold; text-align: center;" >Lista de peliculas: </h3>
+    </div>
 </body>
+<script src="script.js">
+
+
+</script>
 </html>
