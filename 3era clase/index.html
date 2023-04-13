@@ -36,11 +36,10 @@
         },
         methods : {
         },
-        mounted: function () {
-        },
         created: async function () {
             const resultado = await fetch('https://api.coincap.io/v2/assets/');                
             this.criptos = await resultado.json();
+            console.log(Object.keys(this.criptos.data[0]));
             this.criptosSoreted = this.criptos.data.sort(function(a, b){return b.changePercent24Hr - a.changePercent24Hr});
             console.log(this.criptosSoreted);
         }
