@@ -12,12 +12,18 @@
                 </div>
                 <div class="row align-items-start">
                   <div class="col">
-                    Jugador: {{jugadorA.nombre}}
-                    Stamina: {{jugadorA.stamina}}
+                    <p>
+                        Jugador: {{jugadorA.nombre}}
+                    </p>
+                    <p>
+                        Stamina: {{jugadorA.stamina}}
+                    </p>
+                    
+                    
                   </div>
                   <div class="col">
-                    Jugador: {{jugadorB.nombre}}
-                    Stamina: {{jugadorB.stamina}}
+                    <p>Jugador: {{jugadorB.nombre}}</p>
+                    <p>Stamina: {{jugadorB.stamina}}</p>
                   </div>
                 </div>
                 <div class="row align-items-start">
@@ -38,12 +44,12 @@
                 data:
                 {
                     jugadorA : {
-                        nombre : 'Pedro',
+                        nombre : null,
                         stamina : 100,
                         swap: 1
                     },
                     jugadorB : {
-                        nombre : 'Juan',
+                        nombre : null,
                         stamina : 100,
                         swap: 1
                     },
@@ -108,6 +114,10 @@
                 created: function () {
                     this.jugadorJugando = this.jugadorA;
                     this.jugadorNoJugando = this.jugadorB;
+                },
+                mounted: function() {
+                    this.jugadorA.nombre = prompt("Ingresar nombre del jugador A: ")
+                    this.jugadorB.nombre = prompt("Ingresar nombre del jugador B: ")
                 }
 
             });
