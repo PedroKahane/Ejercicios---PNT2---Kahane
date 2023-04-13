@@ -9,7 +9,16 @@
 </head>
 <body>
     <div id="app">
+        <div>
+            <p>Ordenar por: </p>
+            <select name="select" id="select">
+                <option v-for="item in keys " v-bind:value="item">{{item}}</option>
+            </select>
+            <button type="button"  v-on:click="ordenar()"> Ordenar</button>
+        </div>
+          
         <ul>
+            
             <li v-for="(item, index) in criptosSoreted"
             v-bind:class="item.changePercent24Hr > 0 ? 'green' : 'red'">
                 {{index + 1 }} - {{item.name}} : {{item.changePercent24Hr}}
@@ -32,14 +41,22 @@
         el: '#app',
         data: {
             criptos : [],
-            criptosSoreted: []
+            criptosSoreted: [],
+            keys: []
         },
         methods : {
+            ordenar() {
+                const select = document.querySelector("#select").value
+                console.log(select);
+                console.log(typeof parseInt(this.criptosSoreted[0][select]))
+                this.criptosSoreted = this.criptosSoreted.sort( (p1, p2) => (p1[select] > p2[select]) ? 1 : (p1[select] < p2[select]) ? -1 : 0);
+                console.log(this.criptosSoreted);
+            }
         },
         created: async function () {
             const resultado = await fetch('https://api.coincap.io/v2/assets/');                
             this.criptos = await resultado.json();
-            console.log(Object.keys(this.criptos.data[0]));
+            this.keys = Object.keys(this.criptos.data[0])
             this.criptosSoreted = this.criptos.data.sort(function(a, b){return b.changePercent24Hr - a.changePercent24Hr});
             console.log(this.criptosSoreted);
         }
