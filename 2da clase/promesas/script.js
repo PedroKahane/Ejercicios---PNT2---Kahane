@@ -1,32 +1,42 @@
-function horaActual()
-{
-    let date = new Date()
-    var seconds = date.getSeconds();
-var minutes = date.getMinutes();
-var hour = date.getHours();
-return `${hour}:${minutes}:${seconds}:`;
+async function iniciarCarrera(){
+    console.log("Inicio carrera!");
+    const corredor1 = Correr("Pedro")
+    const corredor2 = Correr("Juan")
+    const corredor3 = Correr("Maria")
+    const resultado = await Promise.all([corredor1,corredor2,corredor3])
+
+    resultado.sort((a, b) => a.tiempo - b.tiempo)
+    resultado.forEach((corredor, indice) =>{
+        console.log("El corredor " + corredor.nombre + " llego en el puesto " + indice + " con tiempo: " + corredor.tiempo);
+    } )
 }
 
-function correr (numero) {
-    return new Promise((resolve, reject) => {
-        setTimeout( () =>{
-            resolve("Corredor " + numero + " termino!")
-        },Math.floor(Math.random() * (10000 - 3000 + 1) + 3000))
+async function carreraLarga() {
+    let lista = []
+    console.log("Inicio carrera!");
+    for(let i = 1; i <=  20 ; i++) {
+        const corredor = Correr(i)
+        lista.push(corredor)
+    }
+    const resultado = await Promise.all(lista)
+
+    resultado.sort((a, b) => a.tiempo - b.tiempo)
+    resultado.forEach((corredor, indice) =>{
+        console.log("El corredor " + corredor.nombre + " llego en el puesto " + indice + " con tiempo: " + corredor.tiempo);
+    } )
+}
+
+async function Correr(nombre) {
+    const tiempo = getRandomInt(10,3)
+    const corredor = {nombre, tiempo}
+    return new Promise((resolve) => {
+        setTimeout(() => resolve(corredor),  tiempo)
     })
 }
 
-async function corredores()
-{
-    const corredor = correr(1).then(resultado => {
-        console.log(horaActual() + resultado);
-    })
-    const corredor2 = correr(2).then(resultado => {
-        console.log(horaActual() + resultado);
-    })
-    const corredor3 = correr(3).then(resultado => {
-        console.log(horaActual() + resultado);
-    })
-    await Promise.all([corredor, corredor2, corredor3]); 
+function getRandomInt(max, min) {
+    return Math.floor(Math.random() * (max - min + 1) + min)
 }
 
-corredores()
+//iniciarCarrera()
+carreraLarga()
