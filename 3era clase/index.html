@@ -6,22 +6,25 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
+    <link rel="stylesheet" href=" https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.min.css ">
 </head>
 <body>
     <div id="app">
+        <h1>Lista de criptomonedas</h1>
         <div>
             <p>Ordenar por: </p>
             <select name="select" id="select">
-                <option v-for="item in keys " v-bind:value="item">{{item}}</option>
+                <option v-for="item in keys " v-bind:value="item"
+                v-bind:selected="item =='changePercent24Hr'">{{item}}</option>
             </select>
             <button type="button"  v-on:click="ordenar()"> Ordenar</button>
         </div>
-          
+          <button type="button" v-on:click="cambiarOrden()"><i class="fas fa-sort"></i></button>
         <ul>
             
             <li v-for="(item, index) in criptosSoreted"
-            v-bind:class="item.changePercent24Hr > 0 ? 'green' : 'red'">
-                {{index + 1 }} - {{item.name}} : {{item.changePercent24Hr}}
+            v-bind:class="item.selected > 0 ? 'green' : item.selected < 0 ? 'red' : 'black'">
+                {{index + 1 }} - nombre: {{item.name}} : {{select}} : {{item.selected}}
             </li>
         </ul>
 
@@ -34,6 +37,9 @@
     .red {
         color: red;
     }
+    .black {
+        color: #000;
+    }
 </style>
 <script>
     
@@ -42,22 +48,41 @@
         data: {
             criptos : [],
             criptosSoreted: [],
-            keys: []
+            keys: [],
+            desc: true,
+            select: null
         },
         methods : {
             ordenar() {
-                const select = document.querySelector("#select").value
+                this.select = document.querySelector("#select").value
                 console.log(select);
-                console.log(typeof parseInt(this.criptosSoreted[0][select]))
-                this.criptosSoreted = this.criptosSoreted.sort( (p1, p2) => (p1[select] > p2[select]) ? 1 : (p1[select] < p2[select]) ? -1 : 0);
+                console.log(typeof parseInt(this.criptosSoreted[0][this.select]))
+                var criptomonedas =  this.criptos.data.sort( (p1, p2) => (p1[this.select] > p2[this.select]) ? -1 : (p1[this.select] < p2[this.select]) ? 1 : 0);
+                this.criptosSoreted = []
+                criptomonedas.forEach(element => {
+                    this.criptosSoreted.push({name: element.name, selected : element[this.select]})
+                });
                 console.log(this.criptosSoreted);
+            },
+            cambiarOrden() {
+                if(this.desc){
+                    this.criptosSoreted = this.criptosSoreted.sort((p1, p2) => (p1.selected > p2.selected) ? 1 : (p1.selected < p2.selected) ? -1 : 0)
+                    this.desc = false
+                } else{
+                    this.criptosSoreted = this.criptosSoreted.sort((p1, p2) => (p1.selected > p2.selected) ? -1 : (p1.selected < p2.selected) ? 1 : 0)
+                    this.desc = true
+                }
             }
         },
         created: async function () {
+            this.select = "changePercent24Hr"
             const resultado = await fetch('https://api.coincap.io/v2/assets/');                
             this.criptos = await resultado.json();
             this.keys = Object.keys(this.criptos.data[0])
-            this.criptosSoreted = this.criptos.data.sort(function(a, b){return b.changePercent24Hr - a.changePercent24Hr});
+            var criptomonedas = this.criptos.data.sort(function(a, b){return b.changePercent24Hr - a.changePercent24Hr});
+            criptomonedas.forEach(element => {
+                this.criptosSoreted.push({name: element.name, selected : element.changePercent24Hr})
+            });
             console.log(this.criptosSoreted);
         }
     })
