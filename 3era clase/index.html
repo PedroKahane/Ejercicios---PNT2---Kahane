@@ -53,23 +53,36 @@
             select: null
         },
         methods : {
-            ordenar() {
+            async ordenar() {
                 this.select = document.querySelector("#select").value
-                console.log(select);
-                console.log(typeof parseInt(this.criptosSoreted[0][this.select]))
-                var criptomonedas =  this.criptos.data.sort( (p1, p2) => (p1[this.select] > p2[this.select]) ? -1 : (p1[this.select] < p2[this.select]) ? 1 : 0);
+                console.log(this.select);
                 this.criptosSoreted = []
-                criptomonedas.forEach(element => {
-                    this.criptosSoreted.push({name: element.name, selected : element[this.select]})
+                this.criptos.data.forEach(element => {
+                    if(element[this.select] != null){
+                        this.criptosSoreted.push({name: element.name, selected : element[this.select]})
+                    }
                 });
+                if(this.select == "id" || this.select == "symbol" || this.select == "explorer" || this.select == "name"){
+                        this.criptosSoreted =  this.criptosSoreted.sort( (p1, p2) => (p1.selected > p2.selected) ? -1 : (p1.selected < p2.selected) ? 1 : 0);
+                    } else {
+                        this.criptosSoreted  = this.criptosSoreted.sort(function(a, b){return b.selected - a.selected});
+                    }
                 console.log(this.criptosSoreted);
             },
             cambiarOrden() {
                 if(this.desc){
-                    this.criptosSoreted = this.criptosSoreted.sort((p1, p2) => (p1.selected > p2.selected) ? 1 : (p1.selected < p2.selected) ? -1 : 0)
+                    if(this.select == "id" || this.select == "symbol" || this.select == "explorer" || this.select == "name"){
+                        this.criptosSoreted =  this.criptosSoreted.sort( (p1, p2) => (p1.selected > p2.selected) ? 1 : (p1.selected < p2.selected) ? -1 : 0);
+                    } else {
+                        this.criptosSoreted  = this.criptosSoreted.sort(function(a, b){return a.selected - b.selected});
+                    }
                     this.desc = false
                 } else{
-                    this.criptosSoreted = this.criptosSoreted.sort((p1, p2) => (p1.selected > p2.selected) ? -1 : (p1.selected < p2.selected) ? 1 : 0)
+                    if(this.select == "id" || this.select == "symbol" || this.select == "explorer" || this.select == "name"){
+                        this.criptosSoreted =  this.criptosSoreted.sort( (p1, p2) => (p1.selected > p2.selected) ? -1 : (p1.selected < p2.selected) ? 1 : 0);
+                    } else {
+                        this.criptosSoreted  = this.criptosSoreted.sort(function(a, b){return b.selected - a.selected});
+                    }
                     this.desc = true
                 }
             }
