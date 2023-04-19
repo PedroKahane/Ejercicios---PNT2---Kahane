@@ -1,7 +1,7 @@
 const app = Vue.createApp({
     data() {
         return {
-            msg: "Lista de personajes de Rick and Mortey",
+            msg: "Lista de personajes de Rick and Morty",
             cantidadTotal: 0,
             personajes: [],
         }
